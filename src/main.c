@@ -7,7 +7,7 @@ void menu() {
 	FILE *estante = NULL;
 	FILE *prateleira = NULL;
 	FILE *livro = NULL;
-    abrir_arquivo_leitura(info, "info.txt");
+	abrir_arquivo_leitura(info, "info.txt");
     abrir_arquivo_escrita(estante, "estante");
     abrir_arquivo_escrita(prateleira, "prateleira");
     abrir_arquivo_escrita(livro, "livro");
