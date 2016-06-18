@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "C84440C6B1722F317A638FC013CBFB31AD7FBE4E",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "0A61CFA64FC4BD1B3FAB83832BE3B10BA9D51AFA" : 0,
+    "C84440C6B1722F317A638FC013CBFB31AD7FBE4E" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "CAB324D6-0095-4198-BE60-336E639F064A",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "0A61CFA64FC4BD1B3FAB83832BE3B10BA9D51AFA" : "..",
+    "C84440C6B1722F317A638FC013CBFB31AD7FBE4E" : "AED-TRABALHO-1-QT\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "AED-TRABALHO-1",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "src\/AED-TRABALHO-1.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/andrevctr12\/Code.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "0A61CFA64FC4BD1B3FAB83832BE3B10BA9D51AFA"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/andrevctr12\/AED-TRABALHO.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "C84440C6B1722F317A638FC013CBFB31AD7FBE4E"
+    }
+  ]
+}

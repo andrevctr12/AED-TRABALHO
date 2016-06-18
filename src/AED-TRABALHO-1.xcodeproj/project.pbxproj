@@ -1,0 +1,259 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CB0A05451D160EA500240055 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = CB0A05441D160EA500240055 /* main.c */; };
+		CB0A054A1D160ED200240055 /* arquivos.c in Sources */ = {isa = PBXBuildFile; fileRef = CB0A05461D160ED200240055 /* arquivos.c */; };
+		CB0A054B1D160ED200240055 /* estruturas.c in Sources */ = {isa = PBXBuildFile; fileRef = CB0A05481D160ED200240055 /* estruturas.c */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		CB0A05321D160E2200240055 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		CB0A05341D160E2200240055 /* AED-TRABALHO-1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "AED-TRABALHO-1"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB0A05441D160EA500240055 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = main.c; path = "AED-TRABALHO-1.xcodeproj/main.c"; sourceTree = SOURCE_ROOT; };
+		CB0A05461D160ED200240055 /* arquivos.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = arquivos.c; sourceTree = SOURCE_ROOT; };
+		CB0A05471D160ED200240055 /* arquivos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = arquivos.h; sourceTree = SOURCE_ROOT; };
+		CB0A05481D160ED200240055 /* estruturas.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = estruturas.c; sourceTree = SOURCE_ROOT; };
+		CB0A05491D160ED200240055 /* estruturas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = estruturas.h; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CB0A05311D160E2200240055 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CB0A052B1D160E2200240055 = {
+			isa = PBXGroup;
+			children = (
+				CB0A05361D160E2200240055 /* AED-TRABALHO-1 */,
+				CB0A05351D160E2200240055 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CB0A05351D160E2200240055 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CB0A05341D160E2200240055 /* AED-TRABALHO-1 */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CB0A05361D160E2200240055 /* AED-TRABALHO-1 */ = {
+			isa = PBXGroup;
+			children = (
+				CB0A05461D160ED200240055 /* arquivos.c */,
+				CB0A05471D160ED200240055 /* arquivos.h */,
+				CB0A05481D160ED200240055 /* estruturas.c */,
+				CB0A05491D160ED200240055 /* estruturas.h */,
+				CB0A05441D160EA500240055 /* main.c */,
+			);
+			path = "AED-TRABALHO-1";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CB0A05331D160E2200240055 /* AED-TRABALHO-1 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CB0A053B1D160E2200240055 /* Build configuration list for PBXNativeTarget "AED-TRABALHO-1" */;
+			buildPhases = (
+				CB0A05301D160E2200240055 /* Sources */,
+				CB0A05311D160E2200240055 /* Frameworks */,
+				CB0A05321D160E2200240055 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "AED-TRABALHO-1";
+			productName = "AED-TRABALHO-1";
+			productReference = CB0A05341D160E2200240055 /* AED-TRABALHO-1 */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CB0A052C1D160E2200240055 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = "Andre Victor";
+				TargetAttributes = {
+					CB0A05331D160E2200240055 = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
+				};
+			};
+			buildConfigurationList = CB0A052F1D160E2200240055 /* Build configuration list for PBXProject "AED-TRABALHO-1" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = CB0A052B1D160E2200240055;
+			productRefGroup = CB0A05351D160E2200240055 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CB0A05331D160E2200240055 /* AED-TRABALHO-1 */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CB0A05301D160E2200240055 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB0A05451D160EA500240055 /* main.c in Sources */,
+				CB0A054B1D160ED200240055 /* estruturas.c in Sources */,
+				CB0A054A1D160ED200240055 /* arquivos.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		CB0A05391D160E2200240055 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		CB0A053A1D160E2200240055 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		CB0A053C1D160E2200240055 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		CB0A053D1D160E2200240055 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CB0A052F1D160E2200240055 /* Build configuration list for PBXProject "AED-TRABALHO-1" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CB0A05391D160E2200240055 /* Debug */,
+				CB0A053A1D160E2200240055 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CB0A053B1D160E2200240055 /* Build configuration list for PBXNativeTarget "AED-TRABALHO-1" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CB0A053C1D160E2200240055 /* Debug */,
+				CB0A053D1D160E2200240055 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CB0A052C1D160E2200240055 /* Project object */;
+}

@@ -10,6 +10,7 @@
 #include "arquivos.h"
 #include <stdlib.h>
 #include <string.h>
+#define MAX_GET 2*MAX+3
 
 int inserir_livro(FILE* arq,int cod, char autor[],char titulo[], int prateleira, int estante) {
     cabecalho* cab = le_cabecalho(arq);
@@ -106,14 +107,24 @@ void carregar_arquivos(FILE *info, FILE *estante, FILE *prateleira, FILE *livro)
     Prateleira prat;
     Estante est;
     Livro liv;
+    char linha[MAX_GET];
+    char *token;
+    char s[3] = ",\n";
     cria_lista_vazia(estante);
     cria_lista_vazia(prateleira);
     cria_lista_vazia(livro);
     fseek(info, 0, SEEK_SET);
     while (!feof(info)) {
-        while (fscanf(info, "E%d", &est.num) != 1) {
-            while (fscanf(info, "P%d", &prat.num) != 1) {
-                while(fscanf(info, "%d, %s[MAX], %s[MAX]", &liv.cod, liv.titulo, liv.autor) != 3) {
+        while (fscanf(info, "E%d\n", &est.num)) {
+            while (fscanf(info, "P%d\n", &prat.num)) {
+                while(fscanf(info, "%d", &liv.cod)) {
+                    fgets(linha, MAX_GET, info);
+                    token = strtok (linha,s);
+                    strcpy(liv.titulo, token);
+                    token = strtok(NULL, s);
+                    strcpy(liv.autor, token);
+                    token = NULL;
+                    
                     prat.end_livro[n_livro] = inserir_livro(livro, liv.cod, liv.autor, liv.titulo, prat.num, est.num);
                     prat.cod_livro[n_livro] = liv.cod;
                     n_livro++;
@@ -127,17 +138,19 @@ void carregar_arquivos(FILE *info, FILE *estante, FILE *prateleira, FILE *livro)
     }
 }
 
-void abrir_arquivo_leitura(FILE *arq, char *nome) {
+FILE *abrir_arquivo_leitura(FILE *arq, char *nome) {
     if ((arq = fopen(nome, "r")) == NULL) {
         printf("Não foi possível abrir o arquivo\n");
         exit(0);
     }
+    return arq;
 }
-void abrir_arquivo_escrita(FILE *arq, char *nome) {
+FILE *abrir_arquivo_escrita(FILE *arq, char *nome) {
     if ((arq = fopen(nome, "w+b")) == NULL) {
         printf("Não foi possível abrir o arquivo\n");
         exit(0);
     }
+    return arq;
 }
 
 
