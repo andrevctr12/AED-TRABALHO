@@ -34,6 +34,25 @@ void escreve_livro(FILE* arq, Livro* x, int pos) {
     fwrite(x,sizeof(Livro),1,arq);
 }
 
+void delete_livro(FILE *arq, int pos_ant) {
+    cabecalho* cab = le_cabecalho(arq);
+    Livro *liv_ant = le_livro(arq, pos_ant);
+    int pos = liv_ant->prox;
+    Livro *liv = le_livro(arq, pos);
+    if (cab->pos_cabeca == pos) //Remoção na cabeça
+        cab->pos_cabeca = liv->prox;
+    else
+        liv_ant->prox = liv->prox;
+    liv->prox = cab->pos_livre;
+    cab->pos_livre = pos;
+    escreve_cabecalho(arq, cab);
+    escreve_livro(arq, liv_ant,pos_ant);
+    escreve_livro(arq, liv, pos);
+    free(cab);
+    free(liv);
+    free(liv_ant);
+}
+
 Prateleira* le_prateleira(FILE* arq, int pos) {
     Prateleira* x = malloc(sizeof(Prateleira));
     fseek(arq,sizeof(cabecalho) + pos*sizeof(Prateleira),SEEK_SET);

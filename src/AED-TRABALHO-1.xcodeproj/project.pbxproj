@@ -10,6 +10,7 @@
 		CB0A05451D160EA500240055 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = CB0A05441D160EA500240055 /* main.c */; };
 		CB0A054A1D160ED200240055 /* arquivos.c in Sources */ = {isa = PBXBuildFile; fileRef = CB0A05461D160ED200240055 /* arquivos.c */; };
 		CB0A054B1D160ED200240055 /* estruturas.c in Sources */ = {isa = PBXBuildFile; fileRef = CB0A05481D160ED200240055 /* estruturas.c */; };
+		CB0A05541D1621C400240055 /* funcoes.c in Sources */ = {isa = PBXBuildFile; fileRef = CB0A05521D1621C400240055 /* funcoes.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -31,6 +32,8 @@
 		CB0A05471D160ED200240055 /* arquivos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = arquivos.h; sourceTree = SOURCE_ROOT; };
 		CB0A05481D160ED200240055 /* estruturas.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = estruturas.c; sourceTree = SOURCE_ROOT; };
 		CB0A05491D160ED200240055 /* estruturas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = estruturas.h; sourceTree = SOURCE_ROOT; };
+		CB0A05521D1621C400240055 /* funcoes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = funcoes.c; sourceTree = SOURCE_ROOT; };
+		CB0A05531D1621C400240055 /* funcoes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = funcoes.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +66,8 @@
 		CB0A05361D160E2200240055 /* AED-TRABALHO-1 */ = {
 			isa = PBXGroup;
 			children = (
+				CB0A05521D1621C400240055 /* funcoes.c */,
+				CB0A05531D1621C400240055 /* funcoes.h */,
 				CB0A05461D160ED200240055 /* arquivos.c */,
 				CB0A05471D160ED200240055 /* arquivos.h */,
 				CB0A05481D160ED200240055 /* estruturas.c */,
@@ -129,6 +134,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB0A05451D160EA500240055 /* main.c in Sources */,
+				CB0A05541D1621C400240055 /* funcoes.c in Sources */,
 				CB0A054B1D160ED200240055 /* estruturas.c in Sources */,
 				CB0A054A1D160ED200240055 /* arquivos.c in Sources */,
 			);

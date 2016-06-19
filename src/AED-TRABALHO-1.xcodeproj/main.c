@@ -8,13 +8,14 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "arquivos.h"
+#include "funcoes.h"
 
 void menu() {
     FILE *info;
     FILE *estante;
     FILE *prateleira;
     FILE *livro;
+    FILE *usuario;
     
     info = fopen("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/info.txt", "r");
     estante = fopen("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/estante", "w+b");
@@ -26,9 +27,12 @@ void menu() {
     prateleira = fopen("prateleira", "w+b");
     livro = fopen("livro", "w+b");
      */
+    carregar_arquivos(info, estante, prateleira, livro);
     int op = -1;
+    int cod;
+    char *caminho;
     while (op != 10) {
-        printf("[0]Carregar arquivo de inicialização\n");
+        printf("\n[0]Carregar arquivo de inicialização\n");
         printf("[1]Inserir livro\n");
         printf("[2]Retirar livro\n");
         printf("[3]Busca endereço do livro\n");
@@ -44,7 +48,10 @@ void menu() {
         switch(op)
         {
             case 0:
-                carregar_arquivos(info, estante, prateleira, livro);
+                printf("Qual o caminho do arquivo texto?\n> ");
+                scanf("%s", caminho);
+                usuario = fopen(caminho, "w+b");
+                carregar_arquivos(usuario, estante, prateleira, livro);
                 break;
             case 1:
                 inserir_livro(livro, 1, "alguem", "titulo", 10, 10);
@@ -53,7 +60,13 @@ void menu() {
                 printf("funcao2");
                 break;
             case 3:
-                printf("funcao3");
+                printf("Qual o codigo do livro?\n> ");
+                scanf("%d", &cod);
+                int prat, est;
+                if (busca_end_livro(livro, cod, &est, &prat) != -1) {
+                    printf("Estante: %d\n", est);
+                    printf("Prateleira: %d\n", prat);
+                }
                 break;
             case 4:
                 printf("funcao4");
@@ -65,7 +78,7 @@ void menu() {
                 printf("funcao6");
                 break;
             case 7:
-                printf("funcao7");
+                imprime_estante(livro, estante, prateleira);
                 break;
             case 8:
                 printf("funcao8");
@@ -82,6 +95,7 @@ void menu() {
                 printf("Digite outro número\n");
                 
         }
+        system("clear");
         
     }
 }

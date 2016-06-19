@@ -34,13 +34,16 @@ typedef struct Shelf {
     int prox;
     int cod_livro[MAX_LIVRO];
     int end_livro[MAX_LIVRO];
+    int quant_livro;
 }Prateleira;
 
 typedef struct Bookcase {
     int num;
     int prox;
+    int ant;
     int num_prat[MAX_PRATELEIRA];
     int end_prat[MAX_PRATELEIRA];
+    int quant_prat;
 }Estante;
 
 
@@ -51,6 +54,8 @@ void escreve_cabecalho(FILE* arq, cabecalho* cab);
 Livro* le_livro(FILE* arq, int pos);
 
 void escreve_livro(FILE* arq, Livro* x, int pos);
+
+void delete_livro(FILE *arq, int pos_ant);
 
 Prateleira* le_prateleira(FILE* arq, int pos);
 
