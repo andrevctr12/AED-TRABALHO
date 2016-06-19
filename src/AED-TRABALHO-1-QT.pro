@@ -5,8 +5,12 @@ CONFIG -= qt
 
 SOURCES += main.c \
     arquivos.c \
-    estruturas.c
+    estruturas.c \
+    funcoes.c \
+    inserir_arquivo.c
 
 HEADERS += \
     arquivos.h \
-    estruturas.h
+    estruturas.h \
+    funcoes.h \
+    inserir_arquivo.h

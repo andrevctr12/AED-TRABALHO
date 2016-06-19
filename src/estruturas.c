@@ -22,6 +22,18 @@ void escreve_cabecalho(FILE* arq, cabecalho* cab){
     fwrite(cab,sizeof(cabecalho),1,arq);
 }
 
+cab_fila* le_cab_fila(FILE * arq) {
+    cab_fila * cab = (cab_fila*) malloc(sizeof(cab_fila));
+    fseek(arq,sizeof(cabecalho),SEEK_SET);
+    fread(cab,sizeof(cab_fila),1,arq);
+    return cab;
+}
+
+void escreve_cab_fila(FILE* arq, cab_fila* cab){
+    fseek(arq,sizeof(cabecalho),SEEK_SET);
+    fwrite(cab,sizeof(cab_fila),1,arq);
+}
+
 Livro* le_livro(FILE* arq, int pos) {
     Livro* x = malloc(sizeof(Livro));
     fseek(arq,sizeof(cabecalho) + pos*sizeof(Livro),SEEK_SET);
@@ -32,25 +44,6 @@ Livro* le_livro(FILE* arq, int pos) {
 void escreve_livro(FILE* arq, Livro* x, int pos) {
     fseek(arq,sizeof(cabecalho) + pos*sizeof(Livro),SEEK_SET);
     fwrite(x,sizeof(Livro),1,arq);
-}
-
-void delete_livro(FILE *arq, int pos_ant) {
-    cabecalho* cab = le_cabecalho(arq);
-    Livro *liv_ant = le_livro(arq, pos_ant);
-    int pos = liv_ant->prox;
-    Livro *liv = le_livro(arq, pos);
-    if (cab->pos_cabeca == pos) //Remoção na cabeça
-        cab->pos_cabeca = liv->prox;
-    else
-        liv_ant->prox = liv->prox;
-    liv->prox = cab->pos_livre;
-    cab->pos_livre = pos;
-    escreve_cabecalho(arq, cab);
-    escreve_livro(arq, liv_ant,pos_ant);
-    escreve_livro(arq, liv, pos);
-    free(cab);
-    free(liv);
-    free(liv_ant);
 }
 
 Prateleira* le_prateleira(FILE* arq, int pos) {
@@ -75,4 +68,40 @@ Estante* le_estante(FILE* arq, int pos) {
 void escreve_estante(FILE* arq, Estante* x, int pos) {
     fseek(arq,sizeof(cabecalho) + pos*sizeof(Estante),SEEK_SET);
     fwrite(x,sizeof(Estante),1,arq);
+}
+
+Sala* le_sala(FILE* arq, int pos) {
+    Sala* x = malloc(sizeof(Sala));
+    fseek(arq,sizeof(cabecalho) + pos*sizeof(Sala),SEEK_SET);
+    fread(x,sizeof(Sala),1,arq);
+    return x;
+}
+
+void escreve_sala(FILE* arq, Sala* x, int pos) {
+    fseek(arq,sizeof(cabecalho) + pos*sizeof(Sala),SEEK_SET);
+    fwrite(x,sizeof(Sala),1,arq);
+}
+
+Fila* le_fila(FILE* arq, int pos) {
+    Fila* x = malloc(sizeof(Fila));
+    fseek(arq,sizeof(cabecalho) + sizeof(cab_fila) + pos*sizeof(Fila),SEEK_SET);
+    fread(x,sizeof(Fila),1,arq);
+    return x;
+}
+
+void escreve_fila(FILE* arq, Fila* x, int pos) {
+    fseek(arq,sizeof(cabecalho) + sizeof(cab_fila) + pos*sizeof(Fila),SEEK_SET);
+    fwrite(x,sizeof(Fila),1,arq);
+}
+
+Pilha_Livro* le_pilha(FILE* arq, int pos) {
+    Pilha_Livro* x = malloc(sizeof(Pilha_Livro));
+    fseek(arq,sizeof(cabecalho) + sizeof(cab_fila) + pos*sizeof(Pilha_Livro),SEEK_SET);
+    fread(x,sizeof(Pilha_Livro),1,arq);
+    return x;
+}
+
+void escreve_pilha(FILE* arq, Pilha_Livro* x, int pos) {
+    fseek(arq,sizeof(cabecalho) + sizeof(cab_fila) + pos*sizeof(Pilha_Livro),SEEK_SET);
+    fwrite(x,sizeof(Pilha_Livro),1,arq);
 }

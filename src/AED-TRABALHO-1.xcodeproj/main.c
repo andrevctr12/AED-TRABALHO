@@ -10,23 +10,30 @@
 #include <stdlib.h>
 #include "funcoes.h"
 
+
+
 void menu() {
     FILE *info;
     FILE *estante;
     FILE *prateleira;
     FILE *livro;
+    FILE *sala;
+    FILE *fila;
     FILE *usuario;
     
     info = fopen("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/info.txt", "r");
     estante = fopen("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/estante", "w+b");
     prateleira = fopen("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/prateleira", "w+b");
     livro = fopen("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/livro", "w+b");
+    sala = fopen("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/sala", "w+b");
+    fila = fopen("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/fila", "w+b");
     /*
     info = fopen("info.txt", "r");
     estante = fopen("estante", "w+b");
     prateleira = fopen("prateleira", "w+b");
     livro = fopen("livro", "w+b");
      */
+    inicializacao_sala(sala);
     carregar_arquivos(info, estante, prateleira, livro);
     int op = -1;
     int cod;
@@ -57,19 +64,26 @@ void menu() {
                 inserir_livro(livro, 1, "alguem", "titulo", 10, 10);
                 break;
             case 2:
-                printf("funcao2");
+                printf("Qual o codigo do livro a ser retirado?\n> ");
+                scanf("%d", &cod);
+                retirar_livro(cod, livro, prateleira);
                 break;
             case 3:
                 printf("Qual o codigo do livro?\n> ");
                 scanf("%d", &cod);
                 int prat, est;
-                if (busca_end_livro(livro, cod, &est, &prat) != -1) {
+                if (busca_end_livro(livro, cod, &est, &prat)) {
                     printf("Estante: %d\n", est);
                     printf("Prateleira: %d\n", prat);
                 }
                 break;
             case 4:
-                printf("funcao4");
+                printf("Insira o RA do aluno:\n> ");
+                scanf("%d", &cod);
+                int num;
+                if((num = locar_sala(sala, fila, cod)))
+                    printf("Sala %d locada\n", num);
+                else printf("Aluno na Lista de espera\n");
                 break;
             case 5:
                 printf("funcao5");
@@ -78,10 +92,10 @@ void menu() {
                 printf("funcao6");
                 break;
             case 7:
-                imprime_estante(livro, estante, prateleira);
+                imprime_estante(livro, estante, prateleira); //rever estante 0
                 break;
             case 8:
-                printf("funcao8");
+                imprime_mapa_sala(sala, sala);
                 break;
             case 9:
                 printf("funcao9");
@@ -95,7 +109,6 @@ void menu() {
                 printf("Digite outro número\n");
                 
         }
-        system("clear");
         
     }
 }

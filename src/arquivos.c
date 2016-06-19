@@ -14,97 +14,29 @@
 
 
 
-int inserir_livro(FILE* arq,int cod, char autor[],char titulo[], int prateleira, int estante) {
-    cabecalho* cab = le_cabecalho(arq);
-    Livro liv;
-    liv.cod = cod;
-    liv.estante = estante;
-    liv.prateleira = prateleira;
-    liv.prox = cab->pos_cabeca;
-    strcpy(liv.autor, autor);
-    strcpy(liv.titulo, titulo);
-    
-    if(cab->pos_livre == -1) {
-        escreve_livro(arq,&liv,cab->pos_topo);
-        cab->pos_cabeca = cab->pos_topo;
-        cab->pos_topo++;
-    }
-    else {
-        Livro* aux = le_livro(arq,cab->pos_livre);
-        escreve_livro(arq,&liv,cab->pos_livre);
-        cab->pos_cabeca = cab->pos_livre;
-        cab->pos_livre = aux->prox;
-        free(aux);
-    }
-    escreve_cabecalho(arq,cab);
-    int x = cab->pos_cabeca;
-    free(cab);
-    return x;
+
+
+
+
+/**
+ *  Inicialização do arquivo sala
+ *  @pre       Arquivo precisa estar aberto
+ *  @param arq Arquivo a ser modificado
+ */
+void inicializacao_sala(FILE *arq) {
+    cria_lista_vazia(arq);
+    inserir_sala(arq, 3);
+    inserir_sala(arq, 2);
+    inserir_sala(arq, 1);
 }
 
-int inserir_estante(FILE* arq,int num, int num_prat[], int end_prat[], int quant_prat) {
-    cabecalho* cab = le_cabecalho(arq);
-    Estante est;
-    Estante *est_prox = le_estante(arq, cab->pos_cabeca);
-    est.num = num;
-    est.quant_prat = quant_prat;
-    est.prox = cab->pos_cabeca;
-    for (int i = 0; i < quant_prat; i++) {
-        est.num_prat[i] = num_prat[i];
-        est.end_prat[i] = end_prat[i];
-    }
-    if(cab->pos_livre == -1) {
-        est_prox->ant = cab->pos_livre;
-        escreve_estante(arq, est_prox, cab->pos_cabeca);
-        escreve_estante(arq,&est,cab->pos_topo);
-        cab->pos_cabeca = cab->pos_topo;
-        cab->pos_topo++;
-        est_prox->ant = cab->pos_topo;
-    }
-    else {
-        Estante* aux = le_estante(arq,cab->pos_livre);
-        est_prox->ant = cab->pos_livre;
-        escreve_estante(arq, est_prox, cab->pos_cabeca);
-        escreve_estante(arq,&est,cab->pos_livre);
-        cab->pos_cabeca = cab->pos_livre;
-        cab->pos_livre = aux->prox;
-        free(aux);
-    }
-    escreve_cabecalho(arq,cab);
-    int x = cab->pos_cabeca;
-    free(cab);
-    return x;
-}
-
-int inserir_prateleira(FILE* arq,int num, int cod_livro[], int end_livro[], int quant_livro) {
-    cabecalho* cab = le_cabecalho(arq);
-    Prateleira prat;
-    prat.num = num;
-    prat.quant_livro = quant_livro;
-    prat.prox = cab->pos_cabeca;
-    for (int i = 0; i < quant_livro; i++) {
-        prat.cod_livro[i] = cod_livro[i];
-        prat.end_livro[i] = end_livro[i];
-    }
-    
-    if(cab->pos_livre == -1) {
-        escreve_prateleira(arq,&prat,cab->pos_topo);
-        cab->pos_cabeca = cab->pos_topo;
-        cab->pos_topo++;
-    }
-    else {
-        Prateleira* aux = le_prateleira(arq,cab->pos_livre);
-        escreve_prateleira(arq,&prat,cab->pos_livre);
-        cab->pos_cabeca = cab->pos_livre;
-        cab->pos_livre = aux->prox;
-        free(aux);
-    }
-    escreve_cabecalho(arq,cab);
-    int x = cab->pos_cabeca;
-    free(cab);
-    return x;
-}
-
+/**
+ *  Cria uma lista vazia de determinada lista, modificando seu cabeçalho
+ *
+ *  @pre       Arquivo precisa estar aberto
+ *
+ *  @param arq Arquivo a ser modificado
+ */
 void cria_lista_vazia(FILE* arq){
     cabecalho * cab = (cabecalho*) malloc(sizeof(cabecalho));
     cab->pos_cabeca = -1;
@@ -114,11 +46,40 @@ void cria_lista_vazia(FILE* arq){
     free(cab);
 }
 
+void cria_fila_vazia(FILE *arq) {
+    cab_fila *cab_fl = (cab_fila*) malloc(sizeof(cab_fila));
+    cria_lista_vazia(arq);
+    cab_fl->pos_final = -1;
+    cab_fl->pos_inicial = -1;
+    free(cab_fl);
+}
+
+/**
+ *  Remove espaço no inicio da string
+ *
+ *  @param s string
+ *
+ *  @return retorna a string sem o espaço no inicio
+ */
 char* remover_espaco(char *s) {
-    s = s + 1;
+    char *p = s;
+    if (strcmp(p, " ")) {
+        s = s + 1;
+    }
     return s;
 }
 
+/**
+ *  Carrega os dados do arquivo informado com determinado tipo de sintaxe
+ *
+ *  @pre               Arquivos precisam estar abertos
+ *  @pos               Dados carregados no arquivo
+ *
+ *  @param info       Arquivo que contem as informações (leitura)
+ *  @param estante    Arquivo da estante
+ *  @param prateleira Arquivo da prateleira
+ *  @param livro      Arquivo do livro
+ */
 void carregar_arquivos(FILE *info, FILE *estante, FILE *prateleira, FILE *livro) {
     int quant_livro = 0;
     int quant_prat = 0;
@@ -147,7 +108,7 @@ void carregar_arquivos(FILE *info, FILE *estante, FILE *prateleira, FILE *livro)
                 quant_livro++;
             }
             
-            est.end_prat[quant_prat] = inserir_prateleira(prateleira, prat.num, prat.cod_livro, prat.end_livro, quant_livro);
+            est.end_prat[quant_prat] = inserir_prateleira(prateleira, prat.num, prat.cod_livro, prat.end_livro, quant_livro, est.num);
             est.num_prat[quant_prat] = quant_prat;
             quant_prat++;
             quant_livro = 0;
@@ -155,6 +116,7 @@ void carregar_arquivos(FILE *info, FILE *estante, FILE *prateleira, FILE *livro)
         inserir_estante(estante, est.num, est.num_prat, est.end_prat, quant_prat);
         quant_prat = 0;
     }
+    
     
 }
 
