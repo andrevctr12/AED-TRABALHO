@@ -15,16 +15,17 @@ void menu() {
     FILE *estante;
     FILE *prateleira;
     FILE *livro;
-    /*
+    
     info = fopen("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/info.txt", "r");
     estante = fopen("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/estante", "w+b");
     prateleira = fopen("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/prateleira", "w+b");
     livro = fopen("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/livro", "w+b");
-    */
+    /*
     info = fopen("info.txt", "r");
     estante = fopen("estante", "w+b");
     prateleira = fopen("prateleira", "w+b");
     livro = fopen("livro", "w+b");
+     */
     int op = -1;
     while (op != 10) {
         printf("[0]Carregar arquivo de inicialização\n");
@@ -72,8 +73,16 @@ void menu() {
             case 9:
                 printf("funcao9");
                 break;
+            case 10:
+                fclose(info);
+                fclose(livro);
+                fclose(estante);
+                fclose(prateleira);
+            default:
+                printf("Digite outro número\n");
+                
         }
-        system("clear");
+        
     }
 }
 

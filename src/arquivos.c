@@ -36,11 +36,12 @@ int inserir_livro(FILE* arq,int cod, char autor[],char titulo[], int prateleira,
         free(aux);
     }
     escreve_cabecalho(arq,cab);
+    int x = cab->pos_cabeca;
     free(cab);
-    return cab->pos_cabeca;
+    return x;
 }
 
-void inserir_estante(FILE* arq,int num, int num_prat[], int end_prat[], int n) {
+int inserir_estante(FILE* arq,int num, int num_prat[], int end_prat[], int n) {
     cabecalho* cab = le_cabecalho(arq);
     Estante est;
     est.num = num;
@@ -62,7 +63,9 @@ void inserir_estante(FILE* arq,int num, int num_prat[], int end_prat[], int n) {
         free(aux);
     }
     escreve_cabecalho(arq,cab);
+    int x = cab->pos_cabeca;
     free(cab);
+    return x;
 }
 
 int inserir_prateleira(FILE* arq,int num, int cod_livro[], int end_livro[], int n) {
@@ -88,8 +91,9 @@ int inserir_prateleira(FILE* arq,int num, int cod_livro[], int end_livro[], int 
         free(aux);
     }
     escreve_cabecalho(arq,cab);
+    int x = cab->pos_cabeca;
     free(cab);
-    return cab->pos_cabeca;
+    return x;
 }
 
 void cria_lista_vazia(FILE* arq){
@@ -114,28 +118,31 @@ void carregar_arquivos(FILE *info, FILE *estante, FILE *prateleira, FILE *livro)
     cria_lista_vazia(prateleira);
     cria_lista_vazia(livro);
     fseek(info, 0, SEEK_SET);
-    while (!feof(info)) {
-        while (fscanf(info, "E%d\n", &est.num)) {
-            while (fscanf(info, "P%d\n", &prat.num)) {
-                while(fscanf(info, "%d", &liv.cod)) {
-                    fgets(linha, MAX_GET, info);
-                    token = strtok (linha,s);
-                    strcpy(liv.titulo, token);
-                    token = strtok(NULL, s);
-                    strcpy(liv.autor, token);
-                    token = NULL;
-                    
-                    prat.end_livro[n_livro] = inserir_livro(livro, liv.cod, liv.autor, liv.titulo, prat.num, est.num);
-                    prat.cod_livro[n_livro] = liv.cod;
-                    n_livro++;
-                }
-                est.end_prat[n_prateleira] = inserir_prateleira(prateleira, prat.num, prat.cod_livro, prat.end_livro, n_livro);
-                est.num_prat[n_prateleira] = n_prateleira;
-                n_prateleira++;
+    while (!feof(info) && fscanf(info, "E%d\n", &est.num)) {
+        printf("estante add\n");
+        while (!feof(info) && fscanf(info, "P%d\n", &prat.num)) {
+            while(!feof(info) && fscanf(info, "%d", &liv.cod)) {
+                fgets(linha, MAX_GET, info);
+                token = strtok (linha,s);
+                strcpy(liv.titulo, token);
+                token = strtok(NULL, s);
+                strcpy(liv.autor, token);
+                token = NULL;
+                
+                prat.end_livro[n_livro] = inserir_livro(livro, liv.cod, liv.autor, liv.titulo, prat.num, est.num);
+                prat.cod_livro[n_livro] = liv.cod;
+                n_livro++;
             }
-            inserir_estante(estante, est.num, est.num_prat, est.end_prat, n_prateleira);
+            
+            est.end_prat[n_prateleira] = inserir_prateleira(prateleira, prat.num, prat.cod_livro, prat.end_livro, n_livro);
+            est.num_prat[n_prateleira] = n_prateleira;
+            n_prateleira++;
+            n_livro = 0;
         }
+        inserir_estante(estante, est.num, est.num_prat, est.end_prat, n_prateleira);
+        n_prateleira = 0;
     }
+    
 }
 
 FILE *abrir_arquivo_leitura(FILE *arq, char *nome) {
