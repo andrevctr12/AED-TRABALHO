@@ -23,7 +23,7 @@ int busca_end_livro(FILE *livro, int cod, int *est, int *prat, int *pos);
 
 int emprestar_livro(FILE *pilha1, FILE *pilha2,FILE *pilha3, FILE *sala, FILE* livro, int cod, int ra);
 
-void verificar_livro(FILE* pilha, FILE* livro,int cod, int ra, int pos_sala);
+int verificar_livro(FILE* pilha, FILE* livro,int cod, int ra, int pos_sala);
 
 void imprime_estante(FILE* livro, FILE *estante, FILE *prateleira);
 

@@ -155,7 +155,7 @@ void inserir_sala(FILE* arq, int num) {
     Sala sala;
     sala.num = num;
     sala.prox = cab->pos_cabeca;
-    
+    sala.ra = 0;
     if(cab->pos_livre == -1) {
         escreve_sala(arq,&sala,cab->pos_topo);
         cab->pos_cabeca = cab->pos_topo;
@@ -176,8 +176,8 @@ void inserir_sala(FILE* arq, int num) {
 /**
  *  Insere uma struct pilha no arquivo na cabeça da pilha
  *
- *  @pre               Arquivo precisa estar aberto
- *  @pos               Struct sala inserida no arquivo na cabeça da pilha
+ *  @pre             Arquivo precisa estar aberto
+ *  @pos             Struct sala inserida no arquivo na cabeça da pilha
  *
  *  @param arq       Arquivo a ser modificado
  *  @param num       número de identificação da pilha
@@ -188,7 +188,7 @@ void push_pilha(FILE* arq, int ra, int pos_livro, int pos_sala) {
     Pilha_Livro pilha;
     pilha.ra = ra;
     pilha.pos_livro = pos_livro;
-    pilha.pos_livro = pos_sala;
+    pilha.pos_sala = pos_sala;
     pilha.prox = cab->pos_cabeca;
     
     if(cab->pos_livre == -1) {
@@ -273,7 +273,13 @@ void enqueue_fila_espera(FILE *arq, int ra){
     free(cab);
     free(cab_fila);
 }
-
+/**
+ *  Retira a struct da fila e coloca na posição livre do arquivo
+ *
+ *  @pre       Arquivo aberto
+ *
+ *  @param arq Arquivo a ser modificado
+ */
 void dequeue_fila_espera(FILE *arq) {
     cab_fila *cab_fila = le_cab_fila(arq);
     cabecalho* cab = le_cabecalho(arq);

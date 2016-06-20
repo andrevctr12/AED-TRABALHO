@@ -61,12 +61,22 @@ void delete_livro_prat(FILE *prateleira, int num_prat, int num_est, int cod_livr
 
 void retirar_livro(int cod, FILE *livro, FILE *prateleira) {
     int num_est, num_prat, pos_ant, pos;
-    if ((pos_ant = busca_end_livro(livro, cod, &num_est, &num_prat, &pos))) {
+    if ((pos_ant = busca_end_livro(livro, cod, &num_est, &num_prat, &pos) != -1)) {
         delete_livro(livro, pos_ant, pos);
         delete_livro_prat(prateleira, num_prat, num_est, cod);
     }
 }
-
+/**
+ *  Busca o endereço do livro físico e virtual no arquivo livro
+ *
+ *  @param livro Arquivo de livros
+ *  @param cod   codigo do livro
+ *  @param est   endereço da variavel numero da estante
+ *  @param prat  endereço da variavel numero da prateleira
+ *  @param pos   endereço da variavel posição do livro no arquivo
+ *
+ *  @return retorna -1 se não achar, retorna a posição do livro anterior
+ */
 int busca_end_livro(FILE *livro, int cod, int *est, int *prat, int *pos) {
     cabecalho cab = *le_cabecalho(livro);
     Livro liv;
@@ -88,59 +98,63 @@ int busca_end_livro(FILE *livro, int cod, int *est, int *prat, int *pos) {
         *pos = liv.prox;
     }
     printf("Livro indisponível\n");
-    return 0;
+    return -1;
 }
 
 
 int emprestar_livro(FILE *pilha1, FILE *pilha2,FILE *pilha3, FILE *sala, FILE* livro, int cod, int ra) {
     cabecalho cab_sala = *le_cabecalho(sala);
     Sala sl;
-    int pos = cab_sala.pos_cabeca;
+    int pos = cab_sala.pos_livre;
     int pos_sala = 0;
     int num_sala = 0;
     while (pos != -1) {
         sl = *le_sala(sala, pos);
-        pos = sl.prox;
         if(sl.ra == ra) {
             pos_sala = pos;
             num_sala = sl.num;
         }
-        else {
-            printf("Esse aluno em nenhuma sala");
-            return 0;
-        }
+        pos = sl.prox;
     }
+    if (num_sala == 0) {
+        printf("Esse aluno não está em nenhuma sala\n");
+        return 0;
+    }
+    int aux = 0;
     if (num_sala == 1) {
-        verificar_livro(pilha1, livro, cod, ra, pos_sala);
+        aux = verificar_livro(pilha1, livro, cod, ra, pos_sala);
     }
     if (num_sala == 2) {
-        verificar_livro(pilha2, livro, cod, ra, pos_sala);
+        aux = verificar_livro(pilha2, livro, cod, ra, pos_sala);
     }
     if (num_sala == 3) {
-        verificar_livro(pilha3, livro, cod, ra, pos_sala);
+        aux = verificar_livro(pilha3, livro, cod, ra, pos_sala);
     }
-    return 1;
+    return aux;
 }
 
-void verificar_livro(FILE* pilha, FILE* livro,int cod, int ra, int pos_sala){
+int verificar_livro(FILE* pilha, FILE* livro,int cod, int ra, int pos_sala){
     Livro *liv;
     int est, prat;
     int pos_livro;
-    liv->status = 0;
-    if(busca_end_livro(livro, cod, &est, &prat, &pos_livro)) {
+    if(busca_end_livro(livro, cod, &est, &prat, &pos_livro) != -1) {
         liv = le_livro(livro, pos_livro);
         if(liv->status == -1) {
-            printf("livro emprestado");
+            printf("livro indisponível\n");
             free(liv);
-            return;
+            return 0;
         }
     
         push_pilha(pilha, ra, pos_livro, pos_sala);
         liv->status = -1;
         escreve_livro(livro, liv, pos_livro);
-
-    }else printf("Livro inexistente");
+        
+    }else {
+        printf("Livro inexistente");
+        return 0;
+    }
     free(liv);
+    return 1;
 }
 
 void imprime_estante(FILE* livro, FILE *estante, FILE *prateleira) {

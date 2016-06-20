@@ -85,7 +85,7 @@ void menu() {
                 printf("Qual o codigo do livro?\n> ");
                 scanf("%d", &cod);
                 int prat, est, pos;
-                if (busca_end_livro(livro, cod, &est, &prat, &pos)) {
+                if (busca_end_livro(livro, cod, &est, &prat, &pos) != -1) {
                     printf("Estante: %d\n", est);
                     printf("Prateleira: %d\n", prat);
                 }
@@ -103,7 +103,9 @@ void menu() {
                 scanf("%d", &ra);
                 printf("Qual o codigo do livro a ser emprestado?\n> ");
                 scanf("%d", &cod);
-                emprestar_livro(pilha1, pilha2, pilha3, sala, livro, cod, ra);
+                if(emprestar_livro(pilha1, pilha2, pilha3, sala, livro, cod, ra)) {
+                    printf("Livro %d Emprestado com sucesso para RA: %d\n", cod, ra);
+                }
                 break;
             case 6:
                 printf("funcao6");
