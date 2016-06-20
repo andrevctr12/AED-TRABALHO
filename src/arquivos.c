@@ -13,21 +13,21 @@
 #define MAX_GET 2*MAX+3
 
 
-
-
-
-
-
 /**
  *  Inicialização do arquivo sala
- *  @pre       Arquivo precisa estar aberto
- *  @param arq Arquivo a ser modificado
+ *  @pre        Arquivo precisa estar aberto
+ *  @param sala Arquivo sala a ser modificado
+ *  @param fila Arquivo fila a ser modificado
  */
-void inicializacao_sala(FILE *arq) {
-    cria_lista_vazia(arq);
-    inserir_sala(arq, 3);
-    inserir_sala(arq, 2);
-    inserir_sala(arq, 1);
+void inicializacao_sala_fila_pilha(FILE *sala, FILE *fila, FILE *pilha1, FILE *pilha2, FILE *pilha3){
+    cria_lista_vazia(sala);
+    cria_lista_vazia(pilha1);
+    cria_lista_vazia(pilha2);
+    cria_lista_vazia(pilha3);
+    inserir_sala(sala, 3);
+    inserir_sala(sala, 2);
+    inserir_sala(sala, 1);
+    cria_fila_vazia(fila);
 }
 
 /**
@@ -51,6 +51,7 @@ void cria_fila_vazia(FILE *arq) {
     cria_lista_vazia(arq);
     cab_fl->pos_final = -1;
     cab_fl->pos_inicial = -1;
+    escreve_cab_fila(arq, cab_fl);
     free(cab_fl);
 }
 
@@ -72,8 +73,8 @@ char* remover_espaco(char *s) {
 /**
  *  Carrega os dados do arquivo informado com determinado tipo de sintaxe
  *
- *  @pre               Arquivos precisam estar abertos
- *  @pos               Dados carregados no arquivo
+ *  @pre              Arquivos precisam estar abertos
+ *  @pos              Dados carregados no arquivo
  *
  *  @param info       Arquivo que contem as informações (leitura)
  *  @param estante    Arquivo da estante

@@ -32,6 +32,7 @@ int inserir_livro(FILE* arq,int cod, char autor[],char titulo[], int num_prat, i
     liv.num_est = num_est;
     liv.num_prat = num_prat;
     liv.prox = cab->pos_cabeca;
+    liv.status = 1;
     strcpy(liv.autor, autor);
     strcpy(liv.titulo, titulo);
     
@@ -69,7 +70,6 @@ int inserir_livro(FILE* arq,int cod, char autor[],char titulo[], int num_prat, i
 int inserir_estante(FILE* arq,int num, int num_prat[], int end_prat[], int quant_prat) {
     cabecalho* cab = le_cabecalho(arq);
     Estante est;
-    Estante *est_prox = le_estante(arq, cab->pos_cabeca);
     est.num = num;
     est.quant_prat = quant_prat;
     est.prox = cab->pos_cabeca;
@@ -78,17 +78,12 @@ int inserir_estante(FILE* arq,int num, int num_prat[], int end_prat[], int quant
         est.end_prat[i] = end_prat[i];
     }
     if(cab->pos_livre == -1) {
-        est_prox->ant = cab->pos_livre;
-        escreve_estante(arq, est_prox, cab->pos_cabeca);
         escreve_estante(arq,&est,cab->pos_topo);
         cab->pos_cabeca = cab->pos_topo;
         cab->pos_topo++;
-        est_prox->ant = cab->pos_topo;
     }
     else {
         Estante* aux = le_estante(arq,cab->pos_livre);
-        est_prox->ant = cab->pos_livre;
-        escreve_estante(arq, est_prox, cab->pos_cabeca);
         escreve_estante(arq,&est,cab->pos_livre);
         cab->pos_cabeca = cab->pos_livre;
         cab->pos_livre = aux->prox;
@@ -188,11 +183,12 @@ void inserir_sala(FILE* arq, int num) {
  *  @param num       número de identificação da pilha
  *  @param end_livro endereço do livro no arquivo
  */
-void push_pilha(FILE* arq, int ra, int end_livro) {
+void push_pilha(FILE* arq, int ra, int pos_livro, int pos_sala) {
     cabecalho* cab = le_cabecalho(arq);
     Pilha_Livro pilha;
     pilha.ra = ra;
-    pilha.end_livro = end_livro;
+    pilha.pos_livro = pos_livro;
+    pilha.pos_livro = pos_sala;
     pilha.prox = cab->pos_cabeca;
     
     if(cab->pos_livre == -1) {
@@ -211,6 +207,33 @@ void push_pilha(FILE* arq, int ra, int end_livro) {
     free(cab);
 }
 
+
+int pop_pilha(FILE* pilha, FILE *livro) {
+    cabecalho *cab = le_cabecalho(pilha);
+    Pilha_Livro *pil = le_pilha(pilha,cab->pos_cabeca);
+    Livro *liv;
+    int pos_livro;
+    int aux;
+    if (cab->pos_cabeca != -1) {
+        pos_livro = pil->pos_livro;
+        liv = le_livro(livro, pos_livro);
+        liv->status = 1;
+        escreve_livro(livro,liv,pos_livro);
+        free(liv);
+        aux = cab->pos_cabeca;
+        cab->pos_cabeca = pil->prox;
+        pil->prox = cab->pos_livre;
+        cab->pos_livre = aux;
+        escreve_pilha(pilha, pil, aux);
+        escreve_cabecalho(pilha, cab);
+        free(pil);
+        return 1;
+    }
+    free(liv);
+    free(pil);
+    return 0;
+}
+
 /**
  *  Insere uma struct fila no arquivo no final da fila
  *
@@ -220,26 +243,60 @@ void push_pilha(FILE* arq, int ra, int end_livro) {
  *  @param arq Arquivo a ser modificado
  *  @param ra  RA do aluno
  */
-//void enqueue_fila_espera(FILE *arq, int ra){
-//    cab_fila *cab_fila = le_cab_fila(arq);
-//    cabecalho* cab = le_cabecalho(arq);
-//    Fila fila;
-//    fila.ra = ra;
-//    fila.end_livro = end_livro;
-//    fila.prox = cab->pos_cabeca;
-//    
-//    if(cab->pos_livre == -1) {
-//        escreve_fila(arq,&fila,cab->pos_topo);
-//        cab->pos_cabeca = cab->pos_topo;
-//        cab->pos_topo++;
-//    }
-//    else {
-//        Pilha_Livro* aux = le_pilha(arq,cab->pos_livre);
-//        escreve_fila(arq,&fila,cab->pos_livre);
-//        cab->pos_cabeca = cab->pos_livre;
-//        cab->pos_livre = aux->prox;
-//        free(aux);
-//    }
-//    escreve_cabecalho(arq,cab);
-//    free(cab);
-//}
+void enqueue_fila_espera(FILE *arq, int ra){
+    cab_fila *cab_fila = le_cab_fila(arq);
+    cabecalho* cab = le_cabecalho(arq);
+    Fila fila;
+    fila.ra = ra;
+    fila.prox = cab->pos_cabeca;
+    
+    if (cab->pos_cabeca == -1) {
+        cab_fila->pos_inicial = cab->pos_topo;
+    }
+    
+    if(cab->pos_livre == -1) {
+        escreve_fila(arq,&fila,cab->pos_topo);
+        cab->pos_cabeca = cab->pos_topo;
+        cab_fila->pos_final = cab->pos_topo;
+        cab->pos_topo++;
+    }
+    else {
+        Pilha_Livro* aux = le_pilha(arq,cab->pos_livre);
+        escreve_fila(arq,&fila,cab->pos_livre);
+        cab->pos_cabeca = cab->pos_livre;
+        cab_fila->pos_final = cab->pos_livre;
+        cab->pos_livre = aux->prox;
+        free(aux);
+    }
+    escreve_cabecalho(arq,cab);
+    escreve_cab_fila(arq, cab_fila);
+    free(cab);
+    free(cab_fila);
+}
+
+void dequeue_fila_espera(FILE *arq) {
+    cab_fila *cab_fila = le_cab_fila(arq);
+    cabecalho* cab = le_cabecalho(arq);
+    Fila *fila = NULL;
+    Fila *fila_ant;
+    int pos = cab_fila->pos_final;
+    int pos_ant = 0;
+    while (pos != cab_fila->pos_inicial) {
+        fila = le_fila(arq, pos);
+        pos_ant = pos;
+        pos = fila->prox;
+    }
+    fila_ant = le_fila(arq, pos_ant);
+    fila_ant->prox = -1;
+    cab_fila->pos_inicial = pos_ant;
+    fila->prox = cab->pos_livre;
+    escreve_fila(arq, fila, pos);
+    escreve_fila(arq, fila_ant, pos_ant);
+    escreve_cab_fila(arq, cab_fila);
+    escreve_cabecalho(arq, cab);
+    free(cab);
+    free(cab_fila);
+    free(fila);
+    free(fila_ant);
+}
+

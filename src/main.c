@@ -8,26 +8,50 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "arquivos.h"
+#include "funcoes.h"
+
+FILE* verificar_arquivo(char *caminho, char *tipo_abertura) {
+    FILE *f;
+    if((f = fopen(caminho, tipo_abertura)) == NULL) {
+        printf("Arquivo com falha na abertura");
+        exit(0);
+    }
+    return f;
+}
+
 
 void menu() {
-    FILE *info;
-    FILE *estante;
-    FILE *prateleira;
-    FILE *livro;
+    FILE *info = verificar_arquivo("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/info.txt", "r");
+    FILE *estante = verificar_arquivo("estante", "w+b");
+    FILE *prateleira = verificar_arquivo("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/prateleira", "w+b");
+    FILE *livro = verificar_arquivo("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/livro", "w+b");
+    FILE *sala = verificar_arquivo("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/sala", "w+b");
+    FILE *fila = verificar_arquivo("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/fila", "w+b");
+    FILE *pilha1 = verificar_arquivo("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/pilha1", "w+b");
+    FILE *pilha2= verificar_arquivo("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/pilha2", "w+b");
+    FILE *pilha3 = verificar_arquivo("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/pilha3", "w+b");
+    FILE *usuario;
+    
+
     /*
     info = fopen("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/info.txt", "r");
     estante = fopen("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/estante", "w+b");
     prateleira = fopen("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/prateleira", "w+b");
     livro = fopen("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/livro", "w+b");
+    sala = fopen("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/sala", "w+b");
+    fila = fopen("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/fila", "w+b");
+    pilha1 = fopen("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/pilha1", "w+b");
+    pilha2 = fopen("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/pilha2", "w+b");
+    pilha3 = fopen("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/pilha3", "w+b");
     */
-    info = fopen("info.txt", "r");
-    estante = fopen("estante", "w+b");
-    prateleira = fopen("prateleira", "w+b");
-    livro = fopen("livro", "w+b");
+    inicializacao_sala_fila_pilha(sala, fila, pilha1, pilha2, pilha3);
+    carregar_arquivos(info, estante, prateleira, livro);
+    fclose(info);
     int op = -1;
+    int cod, ra;
+    char *caminho;
     while (op != 10) {
-        printf("[0]Carregar arquivo de inicialização\n");
+        printf("\n[0]Carregar arquivo de inicialização\n");
         printf("[1]Inserir livro\n");
         printf("[2]Retirar livro\n");
         printf("[3]Busca endereço do livro\n");
@@ -43,37 +67,68 @@ void menu() {
         switch(op)
         {
             case 0:
-                carregar_arquivos(info, estante, prateleira, livro);
+                printf("Qual o caminho do arquivo texto?\n> ");
+                scanf("%s", caminho);
+                usuario = verificar_arquivo(caminho, "r");
+                carregar_arquivos(usuario, estante, prateleira, livro);
+                fclose(usuario);
                 break;
             case 1:
                 inserir_livro(livro, 1, "alguem", "titulo", 10, 10);
                 break;
             case 2:
-                printf("funcao2");
+                printf("Qual o codigo do livro a ser retirado?\n> ");
+                scanf("%d", &cod);
+                retirar_livro(cod, livro, prateleira);
                 break;
             case 3:
-                printf("funcao3");
+                printf("Qual o codigo do livro?\n> ");
+                scanf("%d", &cod);
+                int prat, est, pos;
+                if (busca_end_livro(livro, cod, &est, &prat, &pos)) {
+                    printf("Estante: %d\n", est);
+                    printf("Prateleira: %d\n", prat);
+                }
                 break;
             case 4:
-                printf("funcao4");
+                printf("Insira o RA do aluno:\n> ");
+                scanf("%d", &ra);
+                int num;
+                if((num = locar_sala(sala, fila, ra)))
+                    printf("Sala %d locada\n", num);
+                else printf("Aluno na Lista de espera\n");
                 break;
             case 5:
-                printf("funcao5");
+                printf("Insira o RA do aluno:\n> ");
+                scanf("%d", &ra);
+                printf("Qual o codigo do livro a ser emprestado?\n> ");
+                scanf("%d", &cod);
+                emprestar_livro(pilha1, pilha2, pilha3, sala, livro, cod, ra);
                 break;
             case 6:
                 printf("funcao6");
                 break;
             case 7:
-                printf("funcao7");
+                imprime_estante(livro, estante, prateleira);
                 break;
             case 8:
-                printf("funcao8");
+                imprime_mapa_sala(sala, livro, pilha1, pilha2, pilha3);
                 break;
             case 9:
-                printf("funcao9");
+                imprime_fila(fila);
                 break;
+            case 10:
+                fclose(livro);
+                fclose(estante);
+                fclose(prateleira);
+                fclose(sala);
+                fclose(fila);
+                fclose(pilha1);
+                fclose(pilha2);
+                fclose(pilha3);
+                
         }
-        system("clear");
+        
     }
 }
 
