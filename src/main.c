@@ -21,15 +21,15 @@ FILE* verificar_arquivo(char *caminho, char *tipo_abertura) {
 
 
 void menu() {
-    FILE *info = verificar_arquivo("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/info.txt", "r");
+    FILE *info = verificar_arquivo("info.txt", "r");
     FILE *estante = verificar_arquivo("estante", "w+b");
-    FILE *prateleira = verificar_arquivo("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/prateleira", "w+b");
-    FILE *livro = verificar_arquivo("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/livro", "w+b");
-    FILE *sala = verificar_arquivo("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/sala", "w+b");
-    FILE *fila = verificar_arquivo("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/fila", "w+b");
-    FILE *pilha1 = verificar_arquivo("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/pilha1", "w+b");
-    FILE *pilha2= verificar_arquivo("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/pilha2", "w+b");
-    FILE *pilha3 = verificar_arquivo("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/pilha3", "w+b");
+    FILE *prateleira = verificar_arquivo("prateleira", "w+b");
+    FILE *livro = verificar_arquivo("livro", "w+b");
+    FILE *sala = verificar_arquivo("sala", "w+b");
+    FILE *fila = verificar_arquivo("fila", "w+b");
+    FILE *pilha1 = verificar_arquivo("pilha1", "w+b");
+    FILE *pilha2= verificar_arquivo("pilha2", "w+b");
+    FILE *pilha3 = verificar_arquivo("pilha3", "w+b");
     FILE *usuario;
     
 

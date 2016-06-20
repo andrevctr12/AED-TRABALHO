@@ -50,10 +50,14 @@ OBJECTS_DIR   = ./
 
 SOURCES       = ../src/main.c \
 		../src/arquivos.c \
-		../src/estruturas.c 
+		../src/estruturas.c \
+		../src/funcoes.c \
+		../src/inserir_arquivo.c 
 OBJECTS       = main.o \
 		arquivos.o \
-		estruturas.o
+		estruturas.o \
+		funcoes.o \
+		inserir_arquivo.o
 DIST          = /Users/andrevictor/Qt/5.6/clang_64/mkspecs/features/spec_pre.prf \
 		/Users/andrevictor/Qt/5.6/clang_64/mkspecs/qdevice.pri \
 		/Users/andrevictor/Qt/5.6/clang_64/mkspecs/features/device_config.prf \
@@ -190,9 +194,13 @@ DIST          = /Users/andrevictor/Qt/5.6/clang_64/mkspecs/features/spec_pre.prf
 		/Users/andrevictor/Qt/5.6/clang_64/mkspecs/features/yacc.prf \
 		/Users/andrevictor/Qt/5.6/clang_64/mkspecs/features/lex.prf \
 		../src/AED-TRABALHO-1-QT.pro arquivos.h \
-		estruturas.h ../src/main.c \
+		estruturas.h \
+		funcoes.h \
+		inserir_arquivo.h ../src/main.c \
 		../src/arquivos.c \
-		../src/estruturas.c
+		../src/estruturas.c \
+		../src/funcoes.c \
+		../src/inserir_arquivo.c
 QMAKE_TARGET  = AED-TRABALHO-1-QT
 DESTDIR       = 
 TARGET        = AED-TRABALHO-1-QT
@@ -520,16 +528,29 @@ compiler_clean:
 
 ####### Compile
 
-main.o: ../src/main.c ../src/arquivos.h \
-		../src/estruturas.h
+main.o: ../src/main.c ../src/funcoes.h \
+		../src/arquivos.h \
+		../src/estruturas.h \
+		../src/inserir_arquivo.h
 	$(CC) -c $(CFLAGS) $(INCPATH) -o main.o ../src/main.c
 
 arquivos.o: ../src/arquivos.c ../src/arquivos.h \
-		../src/estruturas.h
+		../src/estruturas.h \
+		../src/inserir_arquivo.h
 	$(CC) -c $(CFLAGS) $(INCPATH) -o arquivos.o ../src/arquivos.c
 
 estruturas.o: ../src/estruturas.c ../src/estruturas.h
 	$(CC) -c $(CFLAGS) $(INCPATH) -o estruturas.o ../src/estruturas.c
+
+funcoes.o: ../src/funcoes.c ../src/funcoes.h \
+		../src/arquivos.h \
+		../src/estruturas.h \
+		../src/inserir_arquivo.h
+	$(CC) -c $(CFLAGS) $(INCPATH) -o funcoes.o ../src/funcoes.c
+
+inserir_arquivo.o: ../src/inserir_arquivo.c ../src/inserir_arquivo.h \
+		../src/estruturas.h
+	$(CC) -c $(CFLAGS) $(INCPATH) -o inserir_arquivo.o ../src/inserir_arquivo.c
 
 ####### Install
 
