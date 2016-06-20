@@ -32,18 +32,6 @@ void menu() {
     FILE *pilha3 = verificar_arquivo("pilha3", "w+b");
     FILE *usuario;
     
-
-    /*
-    info = fopen("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/info.txt", "r");
-    estante = fopen("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/estante", "w+b");
-    prateleira = fopen("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/prateleira", "w+b");
-    livro = fopen("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/livro", "w+b");
-    sala = fopen("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/sala", "w+b");
-    fila = fopen("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/fila", "w+b");
-    pilha1 = fopen("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/pilha1", "w+b");
-    pilha2 = fopen("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/pilha2", "w+b");
-    pilha3 = fopen("/Users/andrevictor/Documents/Coding/AED/AED-TRABALHO-1-QT/build/pilha3", "w+b");
-    */
     inicializacao_sala_fila_pilha(sala, fila, pilha1, pilha2, pilha3);
     carregar_arquivos(info, estante, prateleira, livro);
     fclose(info);
@@ -74,7 +62,12 @@ void menu() {
                 fclose(usuario);
                 break;
             case 1:
-                inserir_livro(livro, 1, "alguem", "titulo", 10, 10);
+                printf("Qual o codigo do livro?\n> ");
+                scanf("%d", &cod);
+                if(inserir_livro_prat(livro, prateleira, cod, "aaa", "aaa", 1 , 2))
+                    printf("Livro inserido com sucesso!\n");
+                else
+                    printf("Livro já existente ou prateleira/estante não existe\n");
                 break;
             case 2:
                 printf("Qual o codigo do livro a ser retirado?\n> ");
@@ -89,6 +82,8 @@ void menu() {
                     printf("Estante: %d\n", est);
                     printf("Prateleira: %d\n", prat);
                 }
+                else
+                    printf("Livro indisponível");
                 break;
             case 4:
                 printf("Insira o RA do aluno:\n> ");
@@ -106,6 +101,8 @@ void menu() {
                 if(emprestar_livro(pilha1, pilha2, pilha3, sala, livro, cod, ra)) {
                     printf("Livro %d Emprestado com sucesso para RA: %d\n", cod, ra);
                 }
+                else
+                    printf("Livro indisponível");
                 break;
             case 6:
                 printf("funcao6");

@@ -13,6 +13,8 @@
 #include "arquivos.h"
 #include "inserir_arquivo.h"
 
+int inserir_livro_prat(FILE *livro,FILE *prateleira, int cod, char *autor, char *titulo, int num_prat, int num_est);
+
 void delete_livro(FILE *arq, int pos_ant, int pos);
 
 void delete_livro_prat(FILE *prateleira, int num_prat, int num_est, int cod_livro);

@@ -8,9 +8,63 @@
 
 #include "funcoes.h"
 #include <stdlib.h>
-
-void inserir_livro_prat() {
-    
+/**
+ *  <#Description#>
+ *
+ *  @param livro      <#livro description#>
+ *  @param prateleira <#prateleira description#>
+ *  @param cod        <#cod description#>
+ *  @param autor      <#autor description#>
+ *  @param titulo     <#titulo description#>
+ *  @param num_prat   <#num_prat description#>
+ *  @param num_est    <#num_est description#>
+ *
+ *  @return <#return value description#>
+ */
+int inserir_livro_prat(FILE *livro,FILE *prateleira, int cod, char *autor, char *titulo, int num_prat, int num_est) {
+    cabecalho cab_prat = *le_cabecalho(prateleira);
+    Prateleira *prat;
+    int pos,nump,nume;
+    int pos_prat = cab_prat.pos_cabeca;
+    if (busca_end_livro(livro, cod, &nume, &nump, &pos) != -1) {
+        return 0;
+    }
+    int pos_livro = inserir_livro(livro, cod, autor, titulo, num_prat, num_est);
+    while (pos_prat != -1) {
+        prat = le_prateleira(prateleira, pos_prat);
+        
+        if (num_est == prat->num_est) {
+            if (num_prat == prat->num) {
+                int aux = cod;
+                int cod_aux = cod;
+                int aux2 = pos_livro;
+                int i;
+                for (i = 0; i < prat->quant_livro; i++) {
+                    if (cod < prat->cod_livro[i]) {
+                        aux = prat->cod_livro[i];
+                        prat->cod_livro[i] = cod_aux;
+                        cod_aux = aux;
+                        aux2 = prat->end_livro[i];
+                        prat->end_livro[i] = pos_livro;
+                        pos_livro = aux2;
+                    }
+                    
+                }
+                prat->quant_livro++;
+                prat->cod_livro[i] = aux;
+                prat->end_livro[i] = aux2;
+                if (prat->quant_livro == 0) {
+                    prat->cod_livro[0] = cod;
+                    prat->end_livro[0] = pos_livro;
+                }
+                escreve_prateleira(prateleira, prat, pos_prat);
+                free(prat);
+                return 1;
+            }
+        }
+        pos_prat = prat->prox;
+    }
+    return 0;
 }
 
 void delete_livro(FILE *arq, int pos_ant, int pos) {
@@ -97,7 +151,6 @@ int busca_end_livro(FILE *livro, int cod, int *est, int *prat, int *pos) {
         pos_ant = *pos;
         *pos = liv.prox;
     }
-    printf("Livro indisponível\n");
     return -1;
 }
 
