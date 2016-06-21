@@ -105,7 +105,14 @@ void menu() {
                     printf("Livro indisponível");
                 break;
             case 6:
-                printf("funcao6");
+                printf("Insira o RA do aluno:\n> ");
+                scanf("%d", &ra);
+                if(liberar_sala(sala, pilha1, pilha2, pilha3, livro, fila, ra)) {
+                    printf("Sala liberada!\n");
+                }
+                else {
+                    printf("Não foi possível liberar a sala :(\n");
+                }
                 break;
             case 7:
                 imprime_estante(livro, estante, prateleira);

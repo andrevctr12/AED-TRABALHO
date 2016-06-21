@@ -38,7 +38,7 @@ int inserir_livro_prat(FILE *livro,FILE *prateleira, int cod, char *autor, char 
                 int aux = cod;
                 int cod_aux = cod;
                 int aux2 = pos_livro;
-                int i;
+                int i = 0;
                 for (i = 0; i < prat->quant_livro; i++) {
                     if (cod < prat->cod_livro[i]) {
                         aux = prat->cod_livro[i];
@@ -112,7 +112,15 @@ void delete_livro_prat(FILE *prateleira, int num_prat, int num_est, int cod_livr
     }
     free(prat);
 }
-
+/**
+ *  Retira um livro da biblioteca permanentemente
+ *
+ *  @pre  Arquivos abertos
+ *
+ *  @param cod        codigo do livro a ser removido
+ *  @param livro      Arquivo do livro
+ *  @param prateleira Arquivo da prateleira
+ */
 void retirar_livro(int cod, FILE *livro, FILE *prateleira) {
     int num_est, num_prat, pos_ant, pos;
     if ((pos_ant = busca_end_livro(livro, cod, &num_est, &num_prat, &pos) != -1)) {
@@ -155,16 +163,59 @@ int busca_end_livro(FILE *livro, int cod, int *est, int *prat, int *pos) {
 }
 
 
+
+/**
+ *  Pega o livro da prateleira e coloca na pilha em uma sala
+ *
+ *  @param pilha1 Arquivo de pilha num 1
+ *  @param pilha2 Arquivo de pilha num 2
+ *  @param pilha3 Arquivo de pilha num 3
+ *  @param sala   Arquivo da sala
+ *  @param livro  Arquivo dos livros
+ *  @param cod    codigo do livro a ser emprestado
+ *  @param ra     RA do aluno
+ *
+ *  @return retorna 0 caso n posso emprestar o livro, se sim retorna 1
+ */
 int emprestar_livro(FILE *pilha1, FILE *pilha2,FILE *pilha3, FILE *sala, FILE* livro, int cod, int ra) {
+    int pos_sala = 0;
+    int num_sala;
+    if ((num_sala = verificar_sala_ra(sala, ra, &pos_sala))) {
+        int aux = 0;
+        if (num_sala == 1) {
+            aux = verificar_livro(pilha1, livro, cod, ra, pos_sala);
+        }
+        if (num_sala == 2) {
+            aux = verificar_livro(pilha2, livro, cod, ra, pos_sala);
+        }
+        if (num_sala == 3) {
+            aux = verificar_livro(pilha3, livro, cod, ra, pos_sala);
+        }
+        return aux;
+    }
+    return 0;
+}
+
+/**
+ *  Verifica se o aluno com determinado RA esta em alguma sala e em qual sala ele esta
+ *
+ *  @pre            Arquivos abertos
+ *
+ *  @param sala     Arquivo de sala
+ *  @param ra       numero do RA do aluno
+ *  @param pos_sala endereço de memoria da pos_sala
+ *
+ *  @return retorna o número da sala caso tenha algum aluno com determinado ra nela, se não retorna 0
+ */
+int verificar_sala_ra(FILE *sala, int ra, int *pos_sala) {
     cabecalho cab_sala = *le_cabecalho(sala);
     Sala sl;
     int pos = cab_sala.pos_livre;
-    int pos_sala = 0;
     int num_sala = 0;
     while (pos != -1) {
         sl = *le_sala(sala, pos);
         if(sl.ra == ra) {
-            pos_sala = pos;
+            *pos_sala = pos;
             num_sala = sl.num;
         }
         pos = sl.prox;
@@ -173,23 +224,14 @@ int emprestar_livro(FILE *pilha1, FILE *pilha2,FILE *pilha3, FILE *sala, FILE* l
         printf("Esse aluno não está em nenhuma sala\n");
         return 0;
     }
-    int aux = 0;
-    if (num_sala == 1) {
-        aux = verificar_livro(pilha1, livro, cod, ra, pos_sala);
-    }
-    if (num_sala == 2) {
-        aux = verificar_livro(pilha2, livro, cod, ra, pos_sala);
-    }
-    if (num_sala == 3) {
-        aux = verificar_livro(pilha3, livro, cod, ra, pos_sala);
-    }
-    return aux;
+    return num_sala;
 }
 
 int verificar_livro(FILE* pilha, FILE* livro,int cod, int ra, int pos_sala){
     Livro *liv;
     int est, prat;
     int pos_livro;
+    
     if(busca_end_livro(livro, cod, &est, &prat, &pos_livro) != -1) {
         liv = le_livro(livro, pos_livro);
         if(liv->status == -1) {
@@ -266,6 +308,101 @@ int locar_sala(FILE* sala, FILE *fila, int ra){
         
     }
 
+}
+
+
+/**
+ *  Remove o aluno da sala em que ele esta e libera a sala pra ser usada por outro
+ *
+ *  @param sala     Arquivo de sala
+ *  @param num_sala numero da sala
+ *  @param pos_sala posição da sala no arquivo
+ */
+void remover_aluno_sala(FILE *sala, int num_sala, int pos_sala) {
+    cabecalho *cab_sala = le_cabecalho(sala);
+    Sala *sl = le_sala(sala, pos_sala);
+    Sala *aux;
+    sl->ra = 0;
+    int pos_ant = 0;
+    int pos = cab_sala->pos_livre;
+    if (cab_sala->pos_livre == pos_sala) { //remoção na cabeça
+        cab_sala->pos_livre = sl->prox;
+    }
+    else {
+        
+        while (pos != -1 && pos != pos_sala) {
+            aux = le_sala(sala, pos);
+            pos_ant = pos;
+            pos = aux->prox;
+        }
+        aux = le_sala(sala, pos_ant);
+        aux->prox = sl->prox;
+        
+    }
+    sl->prox = cab_sala->pos_cabeca;
+
+    escreve_sala(sala, sl, pos_sala);
+    escreve_sala(sala, aux, pos_ant);
+    escreve_cabecalho(sala, cab_sala);
+    free(cab_sala);
+    free(sl);
+    free(aux);
+    
+}
+/**
+ *  Desempilha toda a pilha de livro
+ *
+ *  @pre  Arquivos abertos
+ *
+ *  @param pilha Arquivo de pilha
+ *  @param livro Arquivo de livro
+ */
+void desempilhar_pilha(FILE *pilha, FILE *livro) {
+    int aux = 1;
+    do {
+        aux = pop_pilha(pilha, livro);
+    }while (aux);
+}
+
+void ocupar_sala_fila(FILE *fila, FILE *sala) {
+    int ra;
+    if ((ra = dequeue_fila_espera(fila))) {
+        locar_sala(sala, fila, ra);
+        printf("Novo aluno da fila ocupando a sala, com RA: %d\n", ra);
+    }
+}
+
+/**
+ *  Libera a sala ocupada
+ *
+ *  @param sala   Arquivo de sala
+ *  @param pilha1 Arquivo da pilha 1
+ *  @param pilha2 Arquivo da pilha 2
+ *  @param pilha3 Arquivo da pilha 3
+ *  @param livro  Arquivo de livro
+ *  @param pilha  Arquivo de fila
+ *  @param ra     RA do aluno
+ *
+ *  @return retorna 1 se bem sucedido em liberar sala ou 0 se não
+ */
+int liberar_sala(FILE *sala, FILE *pilha1, FILE *pilha2, FILE *pilha3, FILE *livro, FILE *fila, int ra) {
+    int pos_sala;
+    int num_sala;
+    if ((num_sala = verificar_sala_ra(sala, ra, &pos_sala))) {
+        remover_aluno_sala(sala, num_sala, pos_sala);
+        if (num_sala == 1) {
+            desempilhar_pilha(pilha1, livro);
+        }
+        if (num_sala == 2) {
+            desempilhar_pilha(pilha2, livro);
+        }
+        if (num_sala == 3) {
+            desempilhar_pilha(pilha3, livro);
+        }
+        ocupar_sala_fila(fila, sala);
+        return 1;
+    }
+    return 0;
 }
 
 /**

@@ -207,7 +207,16 @@ void push_pilha(FILE* arq, int ra, int pos_livro, int pos_sala) {
     free(cab);
 }
 
-
+/**
+ *  Desempilha a pilha e devolve o livro pra prateleira
+ *
+ *  @pre         Arquivos abertos
+ *
+ *  @param pilha Arquivo de pilha
+ *  @param livro Arquivo de livro
+ *
+ *  @return retorna 1 se desempilhou ou 0 se não tem mais o que desempilhar
+ */
 int pop_pilha(FILE* pilha, FILE *livro) {
     cabecalho *cab = le_cabecalho(pilha);
     Pilha_Livro *pil = le_pilha(pilha,cab->pos_cabeca);
@@ -229,8 +238,6 @@ int pop_pilha(FILE* pilha, FILE *livro) {
         free(pil);
         return 1;
     }
-    free(liv);
-    free(pil);
     return 0;
 }
 
@@ -251,7 +258,7 @@ void enqueue_fila_espera(FILE *arq, int ra){
     fila.prox = cab->pos_cabeca;
     
     if (cab->pos_cabeca == -1) {
-        cab_fila->pos_inicial = cab->pos_topo;
+        cab_fila->pos_inicial = cab->pos_cabeca;
     }
     
     if(cab->pos_livre == -1) {
@@ -279,14 +286,17 @@ void enqueue_fila_espera(FILE *arq, int ra){
  *  @pre       Arquivo aberto
  *
  *  @param arq Arquivo a ser modificado
+ *  @return retorna o RA do aluno na fila de espera ou 0 se não houver fila
  */
-void dequeue_fila_espera(FILE *arq) {
+int dequeue_fila_espera(FILE *arq) {
     cab_fila *cab_fila = le_cab_fila(arq);
     cabecalho* cab = le_cabecalho(arq);
-    Fila *fila = NULL;
-    Fila *fila_ant;
     int pos = cab_fila->pos_final;
+    Fila *fila = le_fila(arq, pos);
+    Fila *fila_ant;
     int pos_ant = 0;
+    if (pos == -1) return 0;
+    
     while (pos != cab_fila->pos_inicial) {
         fila = le_fila(arq, pos);
         pos_ant = pos;
@@ -296,13 +306,16 @@ void dequeue_fila_espera(FILE *arq) {
     fila_ant->prox = -1;
     cab_fila->pos_inicial = pos_ant;
     fila->prox = cab->pos_livre;
+    int ra = fila->ra;
     escreve_fila(arq, fila, pos);
     escreve_fila(arq, fila_ant, pos_ant);
     escreve_cab_fila(arq, cab_fila);
     escreve_cabecalho(arq, cab);
+    
     free(cab);
     free(cab_fila);
     free(fila);
     free(fila_ant);
+    return ra;
 }
 
