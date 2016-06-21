@@ -340,6 +340,7 @@ void remover_aluno_sala(FILE *sala, int num_sala, int pos_sala) {
         
     }
     sl->prox = cab_sala->pos_cabeca;
+    cab_sala->pos_cabeca = pos_sala;
 
     escreve_sala(sala, sl, pos_sala);
     escreve_sala(sala, aux, pos_ant);

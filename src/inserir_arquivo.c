@@ -296,11 +296,11 @@ int dequeue_fila_espera(FILE *arq) {
     Fila *fila_ant;
     int pos_ant = 0;
     if (pos == -1) return 0;
-    
-    while (pos != cab_fila->pos_inicial) {
+    int aux = pos;
+    while (aux != -1) {
         fila = le_fila(arq, pos);
-        pos_ant = pos;
-        pos = fila->prox;
+        pos_ant = aux;
+        aux = fila->prox;
     }
     fila_ant = le_fila(arq, pos_ant);
     fila_ant->prox = -1;

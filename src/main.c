@@ -101,8 +101,6 @@ void menu() {
                 if(emprestar_livro(pilha1, pilha2, pilha3, sala, livro, cod, ra)) {
                     printf("Livro %d Emprestado com sucesso para RA: %d\n", cod, ra);
                 }
-                else
-                    printf("Livro indisponível");
                 break;
             case 6:
                 printf("Insira o RA do aluno:\n> ");
