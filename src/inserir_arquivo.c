@@ -1,10 +1,6 @@
-//
-//  inserir_arquivo.c
-//  AED-TRABALHO-1
-//
-//  Created by Andre Victor on 19/06/16.
-//  Copyright © 2016 Andre Victor. All rights reserved.
-//
+/**
+ * @authors Andre Victor e Khadije El Zein
+ */
 
 #include "inserir_arquivo.h"
 #include <stdlib.h>
@@ -258,7 +254,7 @@ void enqueue_fila_espera(FILE *arq, int ra){
     fila.prox = cab->pos_cabeca;
     
     if (cab->pos_cabeca == -1) {
-        cab_fila->pos_inicial = cab->pos_cabeca;
+        cab_fila->pos_inicial = cab->pos_topo;
     }
     
     if(cab->pos_livre == -1) {
@@ -280,6 +276,8 @@ void enqueue_fila_espera(FILE *arq, int ra){
     free(cab);
     free(cab_fila);
 }
+
+
 /**
  *  Retira a struct da fila e coloca na posição livre do arquivo
  *
@@ -291,19 +289,19 @@ void enqueue_fila_espera(FILE *arq, int ra){
 int dequeue_fila_espera(FILE *arq) {
     cab_fila *cab_fila = le_cab_fila(arq);
     cabecalho* cab = le_cabecalho(arq);
-    int pos = cab_fila->pos_final;
+    int pos = cab_fila->pos_inicial;
     Fila *fila = le_fila(arq, pos);
     Fila *fila_ant;
     int pos_ant = 0;
     if (pos == -1) return 0;
-    int aux = pos;
-    while (aux != -1) {
-        fila = le_fila(arq, pos);
+    int aux = cab_fila->pos_final;
+    while (aux != cab_fila->pos_inicial) {
+        fila_ant = le_fila(arq, aux);
         pos_ant = aux;
-        aux = fila->prox;
+        aux = fila_ant->prox;
     }
     fila_ant = le_fila(arq, pos_ant);
-    fila_ant->prox = -1;
+    fila_ant->prox = fila->prox;
     cab_fila->pos_inicial = pos_ant;
     fila->prox = cab->pos_livre;
     int ra = fila->ra;

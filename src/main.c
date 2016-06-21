@@ -1,15 +1,16 @@
-//
-//  main.c
-//  AED-TRABALHO-1
-//
-//  Created by Andre Victor on 24/05/16.
-//  Copyright © 2016 Andre Victor. All rights reserved.
-//
+/**
+ *@authors Andre Victor e Khadije El Zein
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include "funcoes.h"
-
+/**
+ * @brief verifica se arquivo pode ser aberto
+ * @param caminho caminho para chegar no arquivo
+ * @param tipo_abertura tipo de abertura
+ * @return arquivo
+ */
 FILE* verificar_arquivo(char *caminho, char *tipo_abertura) {
     FILE *f;
     if((f = fopen(caminho, tipo_abertura)) == NULL) {
@@ -19,7 +20,9 @@ FILE* verificar_arquivo(char *caminho, char *tipo_abertura) {
     return f;
 }
 
-
+/**
+ * @brief menu
+ */
 void menu() {
     FILE *info = verificar_arquivo("info.txt", "r");
     FILE *estante = verificar_arquivo("estante", "w+b");
@@ -37,6 +40,8 @@ void menu() {
     fclose(info);
     int op = -1;
     int cod, ra;
+    char titulo[MAX], autor[MAX];
+    int num_prat, num_est;
     char *caminho;
     while (op != 10) {
         printf("\n[0]Carregar arquivo de inicialização\n");
@@ -64,7 +69,15 @@ void menu() {
             case 1:
                 printf("Qual o codigo do livro?\n> ");
                 scanf("%d", &cod);
-                if(inserir_livro_prat(livro, prateleira, cod, "aaa", "aaa", 1 , 2))
+                printf("Qual o titulo do livro?\n> ");
+                gets(titulo);
+                printf("Qual o autor do livro?\n> ");
+                gets(autor);
+                printf("Qual a estante do livro?\n> ");
+                scanf("%d", &num_est);
+                printf("Qual a prateleira do livro?\n> ");
+                scanf("%d", &num_prat);
+                if(inserir_livro_prat(livro, prateleira, cod, autor, titulo, num_prat, num_est))
                     printf("Livro inserido com sucesso!\n");
                 else
                     printf("Livro já existente ou prateleira/estante não existe\n");
@@ -135,7 +148,10 @@ void menu() {
         
     }
 }
-
+/**
+ * @brief programa principal
+ * @return 0 ao final
+ */
 int main()
 {
     menu();

@@ -1,25 +1,21 @@
-//
-//  funcoes.c
-//  AED-TRABALHO-1
-//
-//  Created by Andre Victor on 18/06/16.
-//  Copyright © 2016 Andre Victor. All rights reserved.
-//
+/**
+ *@authors Andre Victor e Khadije El Zein
+ */
 
 #include "funcoes.h"
 #include <stdlib.h>
 /**
- *  <#Description#>
+ *  @brief Insere livro na prateleira
  *
- *  @param livro      <#livro description#>
- *  @param prateleira <#prateleira description#>
- *  @param cod        <#cod description#>
- *  @param autor      <#autor description#>
- *  @param titulo     <#titulo description#>
- *  @param num_prat   <#num_prat description#>
- *  @param num_est    <#num_est description#>
+ *  @param livro arquivo de livros
+ *  @param prateleira  arquivo de prateleiras
+ *  @param cod         codigo do livro
+ *  @param autor       autor do livro
+ *  @param titulo      titulo do livro
+ *  @param num_prat    numero da prateleira
+ *  @param num_est     numero da estante
  *
- *  @return <#return value description#>
+ *  @return 0 caso n de pra inserir e 1 caso de.
  */
 int inserir_livro_prat(FILE *livro,FILE *prateleira, int cod, char *autor, char *titulo, int num_prat, int num_est) {
     cabecalho cab_prat = *le_cabecalho(prateleira);
@@ -66,7 +62,13 @@ int inserir_livro_prat(FILE *livro,FILE *prateleira, int cod, char *autor, char 
     }
     return 0;
 }
-
+/**
+ * @brief deleta o livro do arquivo
+ * @param arq  arquivo
+ * @param pos_ant posicao anterior
+ * @param pos  posicao#>
+ * @pre arquivo aberto
+ */
 void delete_livro(FILE *arq, int pos_ant, int pos) {
     cabecalho* cab = le_cabecalho(arq);
     Livro *liv_ant = le_livro(arq, pos_ant);
@@ -84,7 +86,14 @@ void delete_livro(FILE *arq, int pos_ant, int pos) {
     free(liv);
     free(liv_ant);
 }
-
+/**
+ *  Deleta o livro da prateleira
+ *
+ *  @param prateleira Arquivo de prateleira
+ *  @param num_prat   Numero da prateleira
+ *  @param num_est    Numero da estante
+ *  @param cod_livro  codigo do livro
+ */
 void delete_livro_prat(FILE *prateleira, int num_prat, int num_est, int cod_livro) {
     cabecalho cab_prat = *le_cabecalho(prateleira);
     Prateleira *prat = NULL;
@@ -226,7 +235,15 @@ int verificar_sala_ra(FILE *sala, int ra, int *pos_sala) {
     }
     return num_sala;
 }
-
+/**
+ * @brief verifica disponibilidade do livro
+ * @param pilha pilha de livros
+ * @param livro arquivo de livros
+ * @param cod codigo do livro
+ * @param ra registro do aluno
+ * @param pos_sala posicao da sala
+ * @return retorna 0 se livro indisponivel e 1 se disponivel
+ */
 int verificar_livro(FILE* pilha, FILE* livro,int cod, int ra, int pos_sala){
     Livro *liv;
     int est, prat;
@@ -251,7 +268,12 @@ int verificar_livro(FILE* pilha, FILE* livro,int cod, int ra, int pos_sala){
     free(liv);
     return 1;
 }
-
+/**
+ * @brief imprime mapa de estantes
+ * @param livro arquivo de livros
+ * @param estante aqrquivo de estantes
+ * @param prateleira arquivo de prateleiras
+ */
 void imprime_estante(FILE* livro, FILE *estante, FILE *prateleira) {
     int pos_est;
     cabecalho cab_est;
@@ -279,10 +301,10 @@ void imprime_estante(FILE* livro, FILE *estante, FILE *prateleira) {
 
 /**
  *
- *
- *  @param sala <#sala description#>
- *  @param fila <#fila description#>
- *  @param ra   <#ra description#>
+ *  @brief loca sala de estudos
+ *  @param sala arquivo de salas de estudo
+ *  @param fila arquivo de fila de espera
+ *  @param ra   registro do aluno
  *
  *  @return retorna o número da sala locada ou 0 se estiver na lista de espera
  */
@@ -321,7 +343,7 @@ int locar_sala(FILE* sala, FILE *fila, int ra){
 void remover_aluno_sala(FILE *sala, int num_sala, int pos_sala) {
     cabecalho *cab_sala = le_cabecalho(sala);
     Sala *sl = le_sala(sala, pos_sala);
-    Sala *aux;
+    Sala aux;
     sl->ra = 0;
     int pos_ant = 0;
     int pos = cab_sala->pos_livre;
@@ -331,23 +353,22 @@ void remover_aluno_sala(FILE *sala, int num_sala, int pos_sala) {
     else {
         
         while (pos != -1 && pos != pos_sala) {
-            aux = le_sala(sala, pos);
+            aux = *le_sala(sala, pos);
             pos_ant = pos;
-            pos = aux->prox;
+            pos = aux.prox;
         }
-        aux = le_sala(sala, pos_ant);
-        aux->prox = sl->prox;
-        
+        aux = *le_sala(sala, pos_ant);
+        aux.prox = sl->prox;
+        escreve_sala(sala, &aux, pos_ant);
     }
     sl->prox = cab_sala->pos_cabeca;
     cab_sala->pos_cabeca = pos_sala;
 
     escreve_sala(sala, sl, pos_sala);
-    escreve_sala(sala, aux, pos_ant);
+
     escreve_cabecalho(sala, cab_sala);
     free(cab_sala);
     free(sl);
-    free(aux);
     
 }
 /**
@@ -364,7 +385,12 @@ void desempilhar_pilha(FILE *pilha, FILE *livro) {
         aux = pop_pilha(pilha, livro);
     }while (aux);
 }
-
+/**
+ *  Ocupa a sala vazia com a fila
+ *
+ *  @param fila Arquivo de fila
+ *  @param sala Arquivo de sala
+ */
 void ocupar_sala_fila(FILE *fila, FILE *sala) {
     int ra;
     if ((ra = dequeue_fila_espera(fila))) {
@@ -443,7 +469,11 @@ void imprime_mapa_sala(FILE *sala, FILE *livro, FILE *pilha1, FILE *pilha2, FILE
         }
     }
 }
-
+/**
+ * @brief imprime pilha de livros emprestados
+ * @param pilha arquivo de pilha
+ * @param livro arquivo de livros
+ */
 void imprime_pilha_livro(FILE *pilha, FILE *livro) {
     cabecalho cab = *le_cabecalho(pilha);
     Pilha_Livro pil;
@@ -459,7 +489,10 @@ void imprime_pilha_livro(FILE *pilha, FILE *livro) {
     }
 }
 
-
+/**
+ * @brief imprime fila de espera
+ * @param arq arquivo fila
+ */
 void imprime_fila(FILE *arq) {
     int pos_fila;
     Fila fila;

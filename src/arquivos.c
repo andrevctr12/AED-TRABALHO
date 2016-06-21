@@ -1,10 +1,6 @@
-//
-//  arquivos.c
-//  AED-TRABALHO-1
-//
-//  Created by Andre Victor on 28/05/16.
-//  Copyright © 2016 Andre Victor. All rights reserved.
-//
+/**
+ *@authors Andre Victor e Khadije El Zein
+ */
 
 
 #include "arquivos.h"
